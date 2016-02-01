@@ -32,16 +32,11 @@
                             bottom: 50,
                             left: 50
                         }
+
             var fullHeight = 500;
             var fullWidth = 1000;
             var height = fullHeight - (margin.top + margin.bottom);
             var width = fullWidth - (margin.right + margin.left);
-
-            function init() {
-                d3.select("#date h1").text(currentTime.toDateString());
-            }
-
-            init();  
 
             d3.csv("membership.csv", function(e,r){
                 memberData = r;
@@ -62,6 +57,41 @@
                                 .attr("width", width) 
                                 .attr("transform", "translate("+margin.left+","+margin.top+")")
                                 .style("opacity", 1)    
+
+                var pixelTicks = 10;
+                var baseTime = new Date(2015, 08, 26);
+                var currentTime = new Date(2015, 08, 26);
+                var msPerDay = 86400000;
+                var body = d3.select("body").node();
+
+                function init() {
+                    d3.select("#date h1").text(currentTime.toDateString());
+                }
+
+                init();  
+
+                function getTicks() {
+                    return Math.floor(body.scrollTop/pixelTicks)
+                }
+
+                function updateTime() {
+                    currentTime.setTime(baseTime.getTime() + getTicks() * msPerDay);
+                    console.log(currentTime, baseTime, getTicks(), body.scrollTop);
+
+                }
+
+                function updateGraphic() {
+                    d3.select("#date h1").text(currentTime.toDateString());
+                }
+
+                function tick() {
+                    updateTime();
+                    updateGraphic();
+                }
+
+                d3.select(window)
+                    .on("scroll.scroller", tick);
+
 
             }
 
