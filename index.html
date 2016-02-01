@@ -4,6 +4,16 @@
         <meta charset="utf-8">
         <title>D3 Page Template</title>
         <script type="text/javascript" src="d3/d3.min.js"></script>
+        <style>
+            #date {
+                display: inline-block;
+                position: fixed;
+                z-index: 10;
+                top: 50px;
+                right: 50px;
+
+            }
+        </style>
     </head>
     <body>
         <div id="illus">
@@ -27,6 +37,12 @@
             var height = fullHeight - (margin.top + margin.bottom);
             var width = fullWidth - (margin.right + margin.left);
 
+            function init() {
+                d3.select("#date h1").text(currentTime.toDateString());
+            }
+
+            init();  
+
             d3.csv("membership.csv", function(e,r){
                 memberData = r;
 
@@ -37,15 +53,16 @@
             })
 
             function visualization() {
-                
-            var memberChart = d3.select("#illus").append("svg")
-                            .attr("height", fullHeight)
-                            .attr("width", fullWidth) 
-                            .append("g")
-                            .attr("height", height)
-                            .attr("width", width) 
-                            .attr("transform", "translate("+margin.left+","+margin.top+")")
-                            .style("opacity", 1)           
+
+                var memberChart = d3.select("#illus").append("svg")
+                                .attr("height", fullHeight)
+                                .attr("width", fullWidth) 
+                                .append("g")
+                                .attr("height", height)
+                                .attr("width", width) 
+                                .attr("transform", "translate("+margin.left+","+margin.top+")")
+                                .style("opacity", 1)    
+
             }
 
         </script>
