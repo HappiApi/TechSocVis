@@ -29,15 +29,24 @@
 
             d3.csv("membership.csv", function(e,r){
                 memberData = r;
+
+                d3.json("events.json", function(e,r){
+                    eventData = r;
+                    visualization();
+                })
             })
 
-            d3.json("events.json", function(e,r){
-                eventData = r;
-            })
-
-            var svg = d3.select("#illus").append("svg")
+            function visualization() {
+                
+            var memberChart = d3.select("#illus").append("svg")
+                            .attr("height", fullHeight)
+                            .attr("width", fullWidth) 
+                            .append("g")
                             .attr("height", height)
-                            .attr("width", width)
+                            .attr("width", width) 
+                            .attr("transform", "translate("+margin.left+","+margin.top+")")
+                            .style("opacity", 1)           
+            }
 
         </script>
     </body>
