@@ -204,13 +204,13 @@
                                     return cScale(i);
                                 })
                                 .attr("y", function(d) {
-                                    return height - yScale(d.attending_count);
+                                    return yScale(d.attending_count+d.interested_count);
                                 })
                                 .attr("height", 0)
                                 .transition()
                                 .duration(50)
                                 .attr("height", function(d) {
-                                    return yScale(d.attending_count);
+                                    return height - yScale(d.attending_count+d.interested_count);
                                 })        
                 }
 
@@ -273,6 +273,8 @@
                                     })
                                 ])
 
+                var cScale = d3.scale.category10()
+
                 var xAxis = d3.svg.axis()
                             .scale(xScale)
                             .orient("bottom")
@@ -280,11 +282,17 @@
                                 return d + ":00";   
                             })
 
-                var cScale = d3.scale.category10()
+                var yAxis = d3.svg.axis()
+                            .scale(yScale)
+                            .orient("left")   
 
                 var xAxisg = eventChart.append("g")
                                 .call(xAxis)
                                 .attr("transform", "translate(0,"+height+")")
+                                .attr("class", "axis")
+
+                var yAxisg = eventChart.append("g")
+                                .call(yAxis)
                                 .attr("class", "axis")
 
                 var xAxisLabel = eventChart.append("text")
