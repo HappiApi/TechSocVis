@@ -70,6 +70,7 @@
                 var pixelTicks = 10;
                 var baseTime = new Date(2015, 08, 26);
                 var currentTime = new Date(2015, 08, 26);
+                var previousTickDay = new Date(2015, 08, 25);
                 var msPerDay = 86400000;
 
                 var body = d3.select("body").node();
@@ -91,9 +92,6 @@
 
                 }
 
-                function updateGraphic() {
-                    d3.select("#date h1").text(currentTime.toDateString());
-                }
 
                 function currentDayEvent(eventObj) {
                     return eventTimeFormat.parse(eventObj.start_time).toDateString() === currentTime.toDateString()
@@ -112,7 +110,7 @@
 
                 function updateEvents() {
                     var todaysEvents = getTodaysEvent(); 
-                    console.log(todaysEvents)             
+                    // console.log(todaysEvents)             
                     eventChart.selectAll("rect")
                                 .data(todaysEvents)
                                 .enter()
@@ -132,11 +130,31 @@
                     eventChart.selectAll("rect").remove();
                 }
 
+                function updateTimeGraphic() {
+                    d3.select("#date h1").text(currentTime.toDateString());
+                }
+
+                function checkDayChange() {
+                    return !(previousTickDay.toDateString() === currentTime.toDateString())
+                }
+
+                function updateGraphic() {
+                    updateTimeGraphic();
+                    clearEvents();
+                    updateEvents(); 
+                }
+
+                function updatePrevTickDay() {
+                    previousTickDay = new Date(currentTime.toDateString())
+
+                }
+
                 function tick() {
                     updateTime();
-                    updateGraphic();
-                    clearEvents();
-                    updateEvents();
+                    if(checkDayChange()) {
+                        updateGraphic();                 
+                        updatePrevTickDay();
+                    }
                 }
 
                 d3.select(window)
