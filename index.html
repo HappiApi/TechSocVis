@@ -42,9 +42,7 @@
     </head>
     <body>
         <div id="illus">
-            <div id="date">
-                <h1></h1>
-            </div>
+            <h1 id="date"></h1>
             <h3 id="breakTag"></h3>
         </div>
         <script type="text/javascript">
@@ -168,7 +166,7 @@
                 }
 
                 function updateTimeGraphic() {
-                    d3.select("#date h1").text(currentTime.toDateString());
+                    d3.select("#date").text(currentTime.toDateString());
                 }
 
                 function checkDayChange() {
