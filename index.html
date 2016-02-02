@@ -66,6 +66,20 @@
             var height = fullHeight - (margin.top + margin.bottom);
             var width = fullWidth - (margin.right + margin.left);
 
+            d3.csv("membership.csv", function(e,r){
+                memberData = r;
+
+                d3.json("https://uclutech.com/data/events.json", function(error, response){
+                    eventData = response;
+
+                    getFacebookEvents().then(function(d){
+                        facebookData = d;
+                        eventData = combineEventData(eventData, d)
+                        visualization();
+                    });
+                })
+            })
+
             function getFacebookEvents() {
 
                 var ACCESS_TOKEN = "CAAK3kpvZBViIBAAs9SZBVlLXDnQzO8bZAvwjiB7UdzBuKPJsSqiSiYoND0ct8GQsmcGmBD5Y8pCTptMSNTNp9OflfyBLZBq0ijGoLZCbJifZCNcTtQjHh2MkdlW7fmOgFPymnrSIQpVOmz1cQA7TIwzUwzVzvcTtWkOag9OXQvVZC2jMKGU1gUW3fQQWPOZCLCoZD"
@@ -101,16 +115,6 @@
                     return _.assign.apply(null, batches);
                 })
             }
-
-            d3.csv("membership.csv", function(e,r){
-                memberData = r;
-
-                d3.json("https://uclutech.com/data/events.json", function(error, response){
-                    eventData = response;
-
-                    visualization();
-                })
-            })
 
             function combineEventData(eventData, facebookData) {         
                 return eventData.map(function(d) {
@@ -153,10 +157,6 @@
                 function init() {
                     updateTimeGraphic();
                     calcHeight();
-                    getFacebookEvents().then(function(d){
-                        facebookData = d;
-                        eventData = combineEventData(eventData, d)
-                    });
                 }
 
                 init();  
@@ -203,13 +203,15 @@
                                 .attr("fill", function(d, i) {
                                     return cScale(i);
                                 })
-                                .attr("height", 100)
-                                .attr("y", height-100)
-                                .style("opacity", 0)
-                                .transition("appear")
-                                .duration(100)
-                                .style("opacity", 1)                
-                    
+                                .attr("y", function(d) {
+                                    return height - yScale(d.attending_count);
+                                })
+                                .attr("height", 0)
+                                .transition()
+                                .duration(50)
+                                .attr("height", function(d) {
+                                    return yScale(d.attending_count);
+                                })        
                 }
 
                 function clearEvents() {
@@ -259,6 +261,17 @@
                 var xScale = d3.scale.linear()
                                 .range([0, width])
                                 .domain([9, 23])
+
+                var yScale = d3.scale.linear()
+                                .range([height, 0])
+                                .domain([
+                                    d3.min(eventData, function(d) {
+                                        return d.interested_count + d.attending_count;
+                                    }),
+                                    d3.max(eventData, function(d) {
+                                        return d.interested_count + d.attending_count;
+                                    })
+                                ])
 
                 var xAxis = d3.svg.axis()
                             .scale(xScale)
