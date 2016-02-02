@@ -112,6 +112,13 @@
                 })
             })
 
+            function combineEventData(eventData, facebookData) {         
+                return eventData.map(function(d) {
+                    fbObject = _.find(facebookData, ["id", d.facebook_id]);
+                    return _.assignIn(fbObject, d);
+                })
+            }
+
             function visualization() {
 
                 function calcHeight() {
@@ -146,7 +153,10 @@
                 function init() {
                     updateTimeGraphic();
                     calcHeight();
-                    getFacebookEvents();
+                    getFacebookEvents().then(function(d){
+                        facebookData = d;
+                        eventData = combineEventData(eventData, d)
+                    });
                 }
 
                 init();  
