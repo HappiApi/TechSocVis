@@ -4,6 +4,9 @@
         <meta charset="utf-8">
         <title>D3 Page Template</title>
         <script type="text/javascript" src="d3/d3.min.js"></script>
+        <script type="text/javascript" src="axios/axios.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.2.0/lodash.js"></script>
+
         <style>
             #date {
                 display: inline-block;
@@ -50,28 +53,72 @@
 
             var memberData;
             var eventData;
+            var facebookData = [];
             var margin = {
-                            top: 50,
-                            right: 50,
-                            bottom: 50,
-                            left: 50
-                        }
+                top: 50,
+                right: 50,
+                bottom: 50,
+                left: 50
+            }
 
             var fullHeight = 500;
             var fullWidth = 1000;
             var height = fullHeight - (margin.top + margin.bottom);
             var width = fullWidth - (margin.right + margin.left);
 
+            function getFacebookEvents() {
+
+                var ACCESS_TOKEN = "CAAK3kpvZBViIBAAs9SZBVlLXDnQzO8bZAvwjiB7UdzBuKPJsSqiSiYoND0ct8GQsmcGmBD5Y8pCTptMSNTNp9OflfyBLZBq0ijGoLZCbJifZCNcTtQjHh2MkdlW7fmOgFPymnrSIQpVOmz1cQA7TIwzUwzVzvcTtWkOag9OXQvVZC2jMKGU1gUW3fQQWPOZCLCoZD"
+
+                var ids = eventData
+                    .map(function(d){ return d.facebook_id })
+                    .filter(function(d){ return d != null });
+
+                var chunkedIds = _.chunk(ids, 50);
+
+                function getFacebookEventsBatch(ids) {
+                  return axios.get("https://graph.facebook.com/v2.5/", {
+                    params: {
+                      access_token: ACCESS_TOKEN,
+                      ids : ids.join(","),
+                      fields: [
+                        "name",
+                        "start_time",
+                        "attending_count",
+                        "interested_count"
+                      ].join(","),
+                      json: true
+                    }
+                  })
+                  .then(function(response) {
+                    return response.data;
+                  });
+                }
+
+                return Promise.all(
+                    chunkedIds.map(function(d) { return getFacebookEventsBatch(d); })
+                ).then(function(batches) {
+                    return _.assign.apply(null, batches);
+                })
+            }
+
             d3.csv("membership.csv", function(e,r){
                 memberData = r;
 
-                d3.json("https://uclutech.com/data/events.json", function(e,r){
-                    eventData = r;
+                d3.json("https://uclutech.com/data/events.json", function(error, response){
+                    eventData = response;
+
                     visualization();
                 })
             })
 
             function visualization() {
+
+                function calcHeight() {
+                    var scrollPixels = pixelTicks * days;
+                    d3.select("body")
+                        .style("height", window.innerHeight + scrollPixels + "px")
+                }
 
                 var eventChart = d3.select("#illus").append("svg")
                                 .attr("height", fullHeight)
@@ -96,20 +143,15 @@
                 var body = d3.select("body").node();
                 var eventTimeFormat = d3.time.format("%Y-%m-%d %H:%M")
 
-
                 function init() {
-                    function calcHeight() {
-                        var scrollPixels = pixelTicks * days;
-                        d3.select("body")
-                            .style("height", window.innerHeight + scrollPixels + "px")
-                    }
                     updateTimeGraphic();
-                    calcHeight()
+                    calcHeight();
+                    getFacebookEvents();
                 }
 
                 init();  
                 window.onresize = init;
-
+                
                 function getTicks() {
                     return Math.floor(body.scrollTop/pixelTicks)
                 }
@@ -156,8 +198,7 @@
                                 .style("opacity", 0)
                                 .transition("appear")
                                 .duration(100)
-                                .style("opacity", 1)
-                                
+                                .style("opacity", 1)                
                     
                 }
 
