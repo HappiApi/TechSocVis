@@ -14,10 +14,6 @@
 
             }
 
-            body {
-                height: 1000px;
-            }
-        
             svg {
                 position: fixed;
             }
@@ -73,14 +69,25 @@
                 var previousTickDay = new Date(2015, 08, 25);
                 var msPerDay = 86400000;
 
+                // From 26th Sept 2015 - 1st March 2016 (not including end date)
+                var days = 157
+
                 var body = d3.select("body").node();
                 var eventTimeFormat = d3.time.format("%Y-%m-%d %H:%M")
 
+
                 function init() {
-                    d3.select("#date h1").text(currentTime.toDateString());
+                    function calcHeight() {
+                        var scrollPixels = pixelTicks * days;
+                        d3.select("body")
+                            .style("height", window.innerHeight + scrollPixels + "px")
+                    }
+                    updateTimeGraphic();
+                    calcHeight()
                 }
 
                 init();  
+                window.onresize = init;
 
                 function getTicks() {
                     return Math.floor(body.scrollTop/pixelTicks)
