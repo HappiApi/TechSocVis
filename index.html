@@ -204,6 +204,12 @@
                                 .call(xAxis)
                                 .attr("transform", "translate(0,"+height+")")
                                 .attr("class", "axis")
+
+                var xAxisLabel = eventChart.append("text")
+                                    .attr("y", fullHeight-50)
+                                    .attr("x", width/2-15)
+                                    .text("Time")
+
             }
 
         </script>
