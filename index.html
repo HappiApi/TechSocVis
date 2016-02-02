@@ -92,7 +92,6 @@
 
                 }
 
-
                 function currentDayEvent(eventObj) {
                     return eventTimeFormat.parse(eventObj.start_time).toDateString() === currentTime.toDateString()
                 }
@@ -110,7 +109,7 @@
 
                 function updateEvents() {
                     var todaysEvents = getTodaysEvent(); 
-                    // console.log(todaysEvents)             
+                    console.log(todaysEvents)             
                     eventChart.selectAll("rect")
                                 .data(todaysEvents)
                                 .enter()
@@ -118,11 +117,15 @@
                                 .attr("x", function(d) {
                                     return xScale(parseInt(d.start_time.slice(-5,-3)));
                                 })
-                                .attr("y", height-100)
-                                .attr("height", 100)
                                 .attr("width", function(d) {
-                                    return xScale(parseInt(d.end_time.slice(-5,-3))) - xScale(parseInt(d.start_time.slice(-5,-3)));
+                                    return xScale(parseInt(d.end_time.slice(-5,-3))) - xScale(parseInt(d.start_time.slice(-5,-3)))
                                 })
+                                .attr("fill", function(d, i) {
+                                    return cScale(i);
+                                })
+                                .attr("height", 100)
+                                .attr("y", height-100)
+                                
                     
                 }
 
@@ -167,6 +170,8 @@
                 var xAxis = d3.svg.axis()
                             .scale(xScale)
                             .orient("bottom")
+
+                var cScale = d3.scale.category10()
 
                 var xAxisg = eventChart.append("g")
                                 .call(xAxis)
