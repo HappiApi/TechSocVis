@@ -65,7 +65,7 @@
             d3.csv("membership.csv", function(e,r){
                 memberData = r;
 
-                d3.json("events.json", function(e,r){
+                d3.json("https://uclutech.com/data/events.json", function(e,r){
                     eventData = r;
                     visualization();
                 })
