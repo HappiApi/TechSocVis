@@ -30,6 +30,13 @@
                 font-size: 14px;
             }
 
+            #breakTag {
+                text-align: center;
+                top :100px;
+                right: 100px;
+                position: fixed;
+            }
+
 
         </style>
     </head>
@@ -38,6 +45,7 @@
             <div id="date">
                 <h1></h1>
             </div>
+            <h3 id="breakTag"></h3>
         </div>
         <script type="text/javascript">
             // Your beautiful D3 code will go here
@@ -84,6 +92,8 @@
 
                 // From 26th Sept 2015 - 1st March 2016 (not including end date)
                 var days = 157
+                var winterBreakStart = new Date(2015, 11, 19)
+                var winterBreakEnd = new Date(2016, 00, 10)
 
                 var body = d3.select("body").node();
                 var eventTimeFormat = d3.time.format("%Y-%m-%d %H:%M")
@@ -169,6 +179,7 @@
                     updateTimeGraphic();
                     clearEvents();
                     updateEvents(); 
+                    isHoliday();
                 }
 
                 function updatePrevTickDay() {
@@ -181,6 +192,15 @@
                     if(checkDayChange()) {
                         updateGraphic();                 
                         updatePrevTickDay();
+                    }
+                }
+
+                function isHoliday() {
+                    if (currentTime.getTime() > winterBreakStart.getTime() && currentTime.getTime() < winterBreakEnd) {
+                        d3.select("#breakTag").html("Winter Break &#10052;");
+                    }
+                    else {
+                        d3.select("#breakTag").text("");
                     }
                 }
 
