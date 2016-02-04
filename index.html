@@ -66,6 +66,7 @@
             var height = fullHeight - (margin.top + margin.bottom);
             var width = fullWidth - (margin.right + margin.left);
 
+            var errorHeight = 300
             d3.csv("membership.csv", function(e,r){
                 memberData = r;
 
@@ -204,13 +205,22 @@
                                     return cScale(i);
                                 })
                                 .attr("y", function(d) {
-                                    return yScale(d.attending_count+d.interested_count);
+                                    var y = yScale(d.attending_count+d.interested_count)
+                                    if (isNaN(y)) {
+                                        console.log("ERROR")
+                                        return errorHeight;
+                                    } 
+                                    else return y;
                                 })
                                 .attr("height", 0)
                                 .transition()
                                 .duration(50)
                                 .attr("height", function(d) {
-                                    return height - yScale(d.attending_count+d.interested_count);
+                                    var h =  height - yScale(d.attending_count+d.interested_count);
+                                    if (isNaN(h)) {
+                                        return height - errorHeight;
+                                    }
+                                    else return h
                                 })        
                 }
 
@@ -285,6 +295,7 @@
                 var yAxis = d3.svg.axis()
                             .scale(yScale)
                             .orient("left")   
+                            .outerTickSize(0)
 
                 var xAxisg = eventChart.append("g")
                                 .call(xAxis)
