@@ -195,6 +195,7 @@
                                 .data(todaysEvents)
                                 .enter()
 
+                    // Bigger transparent Interested rect
                     enterSelection.append("rect")
                         .attr("x", function(d) {
                             return xScale(parseInt(d.start_time.slice(-5,-3)));
@@ -222,10 +223,12 @@
                             var h =  height - yScale(d.attending_count+d.interested_count);
                             console.log(h)
                             if (isNaN(h)) {
-                                return;
+                                return height - errorHeight;
                             }
                             else return h
-                        })   
+                        })
+
+                    // Smaller opaque attending rect 
                     enterSelection.append("rect")
                         .attr("x", function(d) {
                             return xScale(parseInt(d.start_time.slice(-5,-3)));
@@ -239,7 +242,7 @@
                         .attr("y", function(d) {
                             var y = yScale(d.attending_count)
                             if (isNaN(y)) {
-                                return yScale(0);
+                                return;
                             } 
                             else return y;
                         })
