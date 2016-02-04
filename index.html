@@ -228,6 +228,25 @@
                             else return h
                         })
 
+                    enterSelection.append("text")
+                        .attr("x", function(d) {
+                            return xScale(parseInt(d.start_time.slice(-5,-3)));
+                        })
+                        .attr("y", function(d) {
+                            var y = yScale(d.attending_count+d.interested_count)
+                            if (isNaN(y)) {
+                                console.log("ERROR")
+                                d3.select(this).attr("fill", "#ccc")
+                                return errorHeight-20;
+                            } 
+                            else return y-20;
+                        })
+                        .attr("class", "eventLabel")
+                        .text(function(d) {
+                            return [d.label,d.title].join(' ')
+                        })
+
+
                     // Smaller opaque attending rect 
                     enterSelection.append("rect")
                         .attr("x", function(d) {
@@ -261,6 +280,7 @@
 
                 function clearEvents() {
                     eventChart.selectAll("rect").remove();
+                    eventChart.selectAll(".eventLabel").remove();
                 }
 
                 function updateTimeGraphic() {
