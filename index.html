@@ -191,37 +191,69 @@
                 function updateEvents() {
                     var todaysEvents = getTodaysEvent(); 
                     console.log(todaysEvents)             
-                    eventChart.selectAll("rect")
+                    var enterSelection = eventChart.selectAll("rect")
                                 .data(todaysEvents)
                                 .enter()
-                                .append("rect")
-                                .attr("x", function(d) {
-                                    return xScale(parseInt(d.start_time.slice(-5,-3)));
-                                })
-                                .attr("width", function(d) {
-                                    return xScale(parseInt(d.end_time.slice(-5,-3))) - xScale(parseInt(d.start_time.slice(-5,-3)))
-                                })
-                                .attr("fill", function(d, i) {
-                                    return cScale(i);
-                                })
-                                .attr("y", function(d) {
-                                    var y = yScale(d.attending_count+d.interested_count)
-                                    if (isNaN(y)) {
-                                        console.log("ERROR")
-                                        return errorHeight;
-                                    } 
-                                    else return y;
-                                })
-                                .attr("height", 0)
-                                .transition()
-                                .duration(50)
-                                .attr("height", function(d) {
-                                    var h =  height - yScale(d.attending_count+d.interested_count);
-                                    if (isNaN(h)) {
-                                        return height - errorHeight;
-                                    }
-                                    else return h
-                                })        
+
+                    enterSelection.append("rect")
+                        .attr("x", function(d) {
+                            return xScale(parseInt(d.start_time.slice(-5,-3)));
+                        })
+                        .attr("width", function(d) {
+                            return xScale(parseInt(d.end_time.slice(-5,-3))) - xScale(parseInt(d.start_time.slice(-5,-3)))
+                        })
+                        .attr("fill", function(d, i) {
+                            return cScale(i);
+                        })
+                        .attr("y", function(d) {
+                            var y = yScale(d.attending_count+d.interested_count)
+                            if (isNaN(y)) {
+                                console.log("ERROR")
+                                d3.select(this).attr("fill", "#ccc")
+                                return errorHeight;
+                            } 
+                            else return y;
+                        })
+                        .attr("height", 0)
+                        .style("opacity", 0.5)
+                        .transition()
+                        .duration(50)
+                        .attr("height", function(d) {
+                            var h =  height - yScale(d.attending_count+d.interested_count);
+                            console.log(h)
+                            if (isNaN(h)) {
+                                return;
+                            }
+                            else return h
+                        })   
+                    enterSelection.append("rect")
+                        .attr("x", function(d) {
+                            return xScale(parseInt(d.start_time.slice(-5,-3)));
+                        })
+                        .attr("width", function(d) {
+                            return xScale(parseInt(d.end_time.slice(-5,-3))) - xScale(parseInt(d.start_time.slice(-5,-3)))
+                        })
+                        .attr("fill", function(d, i) {
+                            return cScale(i);
+                        })
+                        .attr("y", function(d) {
+                            var y = yScale(d.attending_count)
+                            if (isNaN(y)) {
+                                return yScale(0);
+                            } 
+                            else return y;
+                        })
+                        .attr("height", 0)
+                        .transition()
+                        .duration(50)
+                        .attr("height", function(d) {
+                            var h =  height - yScale(d.attending_count);
+                            console.log(h)
+                            if (isNaN(h)) {
+                                return;
+                            }
+                            else return h
+                        })        
                 }
 
                 function clearEvents() {
@@ -276,7 +308,7 @@
                                 .range([height, 0])
                                 .domain([
                                     d3.min(eventData, function(d) {
-                                        return d.interested_count + d.attending_count;
+                                        return Math.min(d.interested_count, d.attending_count);
                                     }),
                                     d3.max(eventData, function(d) {
                                         return d.interested_count + d.attending_count;
