@@ -40,6 +40,12 @@
                 position: fixed;
             }
 
+            #eventList {
+                position: fixed;
+                top: 50px;
+                left: 90px;
+            }
+
 
         </style>
     </head>
@@ -47,6 +53,7 @@
         <div id="illus">
             <h1 id="date"></h1>
             <h3 id="breakTag"></h3>
+            <div id="eventList"></div>
         </div>
         <script type="text/javascript">
             // Your beautiful D3 code will go here
@@ -227,26 +234,7 @@
                             }
                             else return h
                         })
-
-                    enterSelection.append("text")
-                        .attr("x", function(d) {
-                            return xScale(parseInt(d.start_time.slice(-5,-3)));
-                        })
-                        .attr("y", function(d) {
-                            var y = yScale(d.attending_count+d.interested_count)
-                            if (isNaN(y)) {
-                                console.log("ERROR")
-                                d3.select(this).attr("fill", "#ccc")
-                                return errorHeight-20;
-                            } 
-                            else return y-20;
-                        })
-                        .attr("class", "eventLabel")
-                        .text(function(d) {
-                            return [d.label,d.title].join(' ')
-                        })
-
-
+                        
                     // Smaller opaque attending rect 
                     enterSelection.append("rect")
                         .attr("x", function(d) {
@@ -275,12 +263,30 @@
                                 return;
                             }
                             else return h
-                        })        
+                        }) 
+
+                    d3.select("#eventList").selectAll("h4")  
+                        .data(todaysEvents)
+                        .enter()
+                        .append('h4')
+                        .attr('class', 'eventLabel')
+                        .text(function(d) {
+                            if( typeof d.label != 'undefined'){
+                                console.log(d.label)
+                                return [d.label, d.title].join(": ");             
+                            }
+                            else {
+                                return d.title;
+                            }
+                        })
+                        .style("color", function(d, i) {
+                            return cScale(i);
+                        }) 
                 }
 
                 function clearEvents() {
                     eventChart.selectAll("rect").remove();
-                    eventChart.selectAll(".eventLabel").remove();
+                    d3.selectAll(".eventLabel").remove();
                 }
 
                 function updateTimeGraphic() {
