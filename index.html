@@ -234,7 +234,7 @@
                             }
                             else return h
                         })
-                        
+
                     // Smaller opaque attending rect 
                     enterSelection.append("rect")
                         .attr("x", function(d) {
@@ -371,6 +371,11 @@
                                     .attr("y", fullHeight-50)
                                     .attr("x", width/2-15)
                                     .text("Time")
+
+                var yAxisLabel = eventChart.append("text")
+                                    .attr("x", -20)
+                                    .attr("y", -20)
+                                    .text("Attended/Interested Count")
 
             }
 
