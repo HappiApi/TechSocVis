@@ -5,7 +5,7 @@
         <title>D3 Page Template</title>
         <script type="text/javascript" src="d3/d3.min.js"></script>
         <script type="text/javascript" src="axios/axios.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.2.0/lodash.js"></script>
+        <script type="text/javascript" src="lodash/lodash.js"></script>
 
         <style>
             #date {
@@ -74,18 +74,15 @@
             var width = fullWidth - (margin.right + margin.left);
 
             var errorHeight = 300
-            d3.csv("membership.csv", function(e,r){
-                memberData = r;
+            
+            d3.json("https://uclutech.com/data/events.json", function(error, response){
+                eventData = response;
 
-                d3.json("https://uclutech.com/data/events.json", function(error, response){
-                    eventData = response;
-
-                    getFacebookEvents().then(function(d){
-                        facebookData = d;
-                        eventData = combineEventData(eventData, d)
-                        visualization();
-                    });
-                })
+                getFacebookEvents().then(function(d){
+                    facebookData = d;
+                    eventData = combineEventData(eventData, d)
+                    visualization();
+                });
             })
 
             function getFacebookEvents() {
@@ -147,6 +144,15 @@
                                 .attr("width", width) 
                                 .attr("transform", "translate("+margin.left+","+margin.top+")")
                                 .style("opacity", 1)    
+
+                var legend = d3.select("svg").append("g")
+                                .attr("class", "legend")
+                                .attr("width", 50)
+                                .attr("height", 50)
+                                
+                legend.append("text")
+                                .attr("transform", "translate(870,170)")
+                                .text("Interested Count")
 
                 var pixelTicks = 10;
                 var baseTime = new Date(2015, 08, 26);
@@ -375,7 +381,7 @@
                 var yAxisLabel = eventChart.append("text")
                                     .attr("x", -20)
                                     .attr("y", -20)
-                                    .text("Attended/Interested Count")
+                                    .text("Head Count")
 
             }
 
