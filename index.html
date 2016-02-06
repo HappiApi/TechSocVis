@@ -149,10 +149,37 @@
                                 .attr("class", "legend")
                                 .attr("width", 50)
                                 .attr("height", 50)
-                                
+                                .attr("transform", "translate(830, 175)")
+
                 legend.append("text")
-                                .attr("transform", "translate(870,170)")
+                                .attr("transform", "translate(20,13)")
                                 .text("Interested Count")
+                legend.append("text")
+                                .attr("transform", "translate(20,43)")
+                                .text("Attending Count")
+                legend.append("text")
+                                .attr("transform", "translate(20,73)")
+                                .text("No Data")
+
+                legend.append("rect")
+                                .attr("transform", "translate(0,0)")
+                                .attr("height", 15)
+                                .attr("width", 15)
+                                .attr("fill", "#1f77b4")
+                                .style("opacity", 0.5)
+                                
+               legend.append("rect")
+                               .attr("transform", "translate(0,30)")
+                               .attr("height", 15)
+                               .attr("width", 15)
+                               .attr("fill", "#1f77b4")
+
+                legend.append("rect")
+                                .attr("transform", "translate(0,60)")
+                                .attr("height", 15)
+                                .attr("width", 15)
+                                .attr("fill", "#ccc")
+
 
                 var pixelTicks = 10;
                 var baseTime = new Date(2015, 08, 26);
@@ -351,7 +378,6 @@
                                 ])
 
                 var cScale = d3.scale.category10()
-
                 var xAxis = d3.svg.axis()
                             .scale(xScale)
                             .orient("bottom")
