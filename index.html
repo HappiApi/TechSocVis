@@ -54,8 +54,7 @@
 
             #eventList {
                 position: fixed;
-                top: 50px;
-                left: 90px;
+                max-width: 50%;
             }
 
         </style>
@@ -164,7 +163,11 @@
                                 .attr("height", height)
                                 .attr("width", width) 
                                 .attr("transform", "translate("+margin.left+","+margin.top+")")
-                                .style("opacity", 1)    
+                                .style("opacity", 1)
+
+                d3.select("#eventList")
+                    .style("top", margin.top + "px")
+                    .style("left", margin.left + margin.right + "px")
 
                 var legend = d3.select(".legend-container").append("svg")
                                 .attr("class", "legend")
