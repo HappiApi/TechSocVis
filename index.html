@@ -75,7 +75,7 @@
 
             var errorHeight = 300
             
-            d3.json("https://techsoc.io/data/events.json", function(error, response){
+            d3.json("events.json", function(error, response){
                 eventData = response;
 
                 getFacebookEvents().then(function(d){
@@ -85,9 +85,8 @@
                 });
             })
 
-            function getFacebookEvents() {
-
-                var ACCESS_TOKEN = "CAAK3kpvZBViIBAAs9SZBVlLXDnQzO8bZAvwjiB7UdzBuKPJsSqiSiYoND0ct8GQsmcGmBD5Y8pCTptMSNTNp9OflfyBLZBq0ijGoLZCbJifZCNcTtQjHh2MkdlW7fmOgFPymnrSIQpVOmz1cQA7TIwzUwzVzvcTtWkOag9OXQvVZC2jMKGU1gUW3fQQWPOZCLCoZD"
+            // Get data from FB, not used anymore
+            function getFacebookEventsLive() {
 
                 var ids = eventData
                     .map(function(d){ return d.facebook_id })
@@ -121,6 +120,16 @@
                 })
             }
 
+            function getFacebookEvents() {
+                return axios.get("fbData.json").then(function(response){
+                    var collector = {};
+                    _.forEach(response.data, function(value){
+                        collector[value.id] = value;
+                    })
+                    console.log(collector);
+                    return collector
+                })
+            }
             function combineEventData(eventData, facebookData) {         
                 return eventData.map(function(d) {
                     fbObject = _.find(facebookData, ["id", d.facebook_id]);
