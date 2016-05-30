@@ -200,6 +200,10 @@
                 var days = 157
                 var winterBreakStart = new Date(2015, 11, 19)
                 var winterBreakEnd = new Date(2016, 00, 10)
+                var readingWeekStart = new Date(2015, 10, 09)
+                var readingWeekEnd = new Date(2015, 10, 15)
+                var readingWeekTwoStart = new Date(2016, 01, 15)
+                var readingWeekTwoEnd = new Date(2016, 01, 21)
 
                 var body = d3.select("body").node();
                 var eventTimeFormat = d3.time.format("%Y-%m-%d %H:%M")
@@ -360,8 +364,14 @@
                 }
 
                 function isHoliday() {
-                    if (currentTime.getTime() > winterBreakStart.getTime() && currentTime.getTime() < winterBreakEnd) {
+                    if(currentTime > winterBreakStart && currentTime < winterBreakEnd) {
                         d3.select("#breakTag").html("Winter Break &#10052;");
+                    }
+                    else if(currentTime > readingWeekStart && currentTime < readingWeekEnd) {
+                        d3.select("#breakTag").html("Reading Week");
+                    }
+                    else if(currentTime > readingWeekTwoStart && currentTime < readingWeekTwoEnd) {
+                        d3.select("#breakTag").html("Reading Week");
                     }
                     else {
                         d3.select("#breakTag").text("");
