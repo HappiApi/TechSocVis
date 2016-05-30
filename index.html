@@ -13,7 +13,7 @@
             body {
                 font-family: 'Karla';
             }
-            
+
             #date {
                 display: inline-block;
                 position: fixed;
@@ -25,6 +25,12 @@
 
             svg {
                 position: fixed;
+            }
+
+            .legend-container {
+                position: fixed;
+                top: 165px;
+                right: 250px;
             }
 
             .axis path,
@@ -52,10 +58,10 @@
                 left: 90px;
             }
 
-
         </style>
     </head>
     <body>
+        <div class="legend-container"></div>
         <div id="illus">
             <h1 id="date"></h1>
             <h3 id="breakTag"></h3>
@@ -160,20 +166,17 @@
                                 .attr("transform", "translate("+margin.left+","+margin.top+")")
                                 .style("opacity", 1)    
 
-                var legend = d3.select("svg").append("g")
+                var legend = d3.select(".legend-container").append("svg")
                                 .attr("class", "legend")
-                                .attr("width", 50)
-                                .attr("height", 50)
-                                .attr("transform", "translate(830, 175)")
 
                 legend.append("text")
-                                .attr("transform", "translate(20,13)")
+                                .attr("transform", "translate(55,13)")
                                 .text("Interested Count")
                 legend.append("text")
-                                .attr("transform", "translate(20,43)")
+                                .attr("transform", "translate(55,43)")
                                 .text("Attending Count")
                 legend.append("text")
-                                .attr("transform", "translate(20,73)")
+                                .attr("transform", "translate(55,73)")
                                 .text("No Data")
 
                 legend.append("rect")
@@ -184,14 +187,14 @@
                                 .style("opacity", 0.5)
 
                 legend.append("rect")
-                                .attr("transform", "translate(-15,0)")
+                                .attr("transform", "translate(15,0)")
                                 .attr("height", 15)
                                 .attr("width", 15)
                                 .attr("fill", "#2ca02c")
                                 .style("opacity", 0.5)
 
                 legend.append("rect")
-                                .attr("transform", "translate(-30,0)")
+                                .attr("transform", "translate(30,0)")
                                 .attr("height", 15)
                                 .attr("width", 15)
                                 .attr("fill", "#ff7f0e")
@@ -204,19 +207,19 @@
                                .attr("fill", "#1f77b4")
 
                 legend.append("rect")
-                                .attr("transform", "translate(-15,30)")
+                                .attr("transform", "translate(15,30)")
                                 .attr("height", 15)
                                 .attr("width", 15)
                                 .attr("fill", "#2ca02c")
 
                 legend.append("rect")
-                                .attr("transform", "translate(-30,30)")
+                                .attr("transform", "translate(30,30)")
                                 .attr("height", 15)
                                 .attr("width", 15)
                                 .attr("fill", "#ff7f0e")
 
                 legend.append("rect")
-                                .attr("transform", "translate(0,60)")
+                                .attr("transform", "translate(30,60)")
                                 .attr("height", 15)
                                 .attr("width", 15)
                                 .attr("fill", "#ccc")
