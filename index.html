@@ -174,7 +174,8 @@
                     .style("top", margin.top + "px")
                     .style("left", margin.left + margin.right + "px")
 
-                var legend = d3.select(".legend-container").append("svg")
+                var legend = d3.select("#illus svg").append("g")
+                                .attr("transform", "translate("+(width-margin.left)+","+150+")")
                                 .attr("class", "legend")
 
                 legend.append("text")
