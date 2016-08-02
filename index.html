@@ -15,12 +15,7 @@
             }
 
             #date {
-                display: inline-block;
-                position: fixed;
-                z-index: 10;
-                top: 50px;
-                right: 50px;
-
+                font-size: 1.5em;
             }
 
             svg {
@@ -45,13 +40,6 @@
                 font-size: 14px;
             }
 
-            #breakTag {
-                text-align: center;
-                top :100px;
-                right: 100px;
-                position: fixed;
-            }
-
             #eventList {
                 position: fixed;
                 max-width: 50%;
@@ -67,8 +55,6 @@
         <h1 class="title"> TechSoc Events 2015-2016</h1>
         <div class="legend-container"></div>
         <div id="illus">
-            <h1 id="date"></h1>
-            <h3 id="breakTag"></h3>
             <div id="eventList"></div>
         </div>
         <script type="text/javascript">
@@ -170,12 +156,20 @@
                                 .attr("transform", "translate("+margin.left+","+margin.top+")")
                                 .style("opacity", 1)
 
+                d3.select("#illus svg").append("text")
+                    .attr("id", "date")
+                    .attr("transform", "translate(800,70)")
+
+                d3.select("#illus svg").append("text")
+                    .attr("id", "breakTag")
+                    .attr("transform", "translate(830,100)")
+
                 d3.select("#eventList")
                     .style("top", margin.top + "px")
                     .style("left", margin.left + margin.right + "px")
 
                 var legend = d3.select("#illus svg").append("g")
-                                .attr("transform", "translate("+(width-margin.left)+","+150+")")
+                                .attr("transform", "translate("+(width-margin.left)+","+135+")")
                                 .attr("class", "legend")
 
                 legend.append("text")
