@@ -49,10 +49,10 @@
                 position: fixed;
                 left: 40%;
             }
+
         </style>
     </head>
     <body>
-        <h1 class="title"> TechSoc Events 2015-2016</h1>
         <div class="legend-container"></div>
         <div id="illus">
         </div>
@@ -154,6 +154,12 @@
                                 .attr("width", width) 
                                 .attr("transform", "translate("+margin.left+","+margin.top+")")
                                 .style("opacity", 1)
+
+                d3.select("#illus svg").append("text")
+                    .attr("id", "title")
+                    .attr("font-size", "1.7em")
+                    .attr("transform", "translate(350,30)")
+                    .text("TechSoc Events 2015 / 2016")
 
                 d3.select("#illus svg").append("text")
                     .attr("id", "date")
