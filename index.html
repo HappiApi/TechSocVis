@@ -147,8 +147,8 @@
                 }
 
                 var eventChart = d3.select("#illus").append("svg")
-                                .attr("height", fullHeight)
-                                .attr("width", fullWidth)
+                                .attr("viewBox", "0 0 " + fullWidth + " " + fullHeight)
+                                .attr("preserveAspectRatio", "xMidYMid meet")
                                 .append("g")
                                 .attr("height", height)
                                 .attr("width", width) 
