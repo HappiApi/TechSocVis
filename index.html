@@ -55,7 +55,6 @@
         <h1 class="title"> TechSoc Events 2015-2016</h1>
         <div class="legend-container"></div>
         <div id="illus">
-            <div id="eventList"></div>
         </div>
         <script type="text/javascript">
             // Your beautiful D3 code will go here
@@ -163,6 +162,10 @@
                 d3.select("#illus svg").append("text")
                     .attr("id", "breakTag")
                     .attr("transform", "translate(830,100)")
+
+                d3.select("#illus svg").append("text")
+                    .attr("id", "eventList")
+                    .attr("transform", "translate(100,50)")
 
                 d3.select("#eventList")
                     .style("top", margin.top + "px")
@@ -349,10 +352,10 @@
                             else return h
                         }) 
 
-                    d3.select("#eventList").selectAll("h4")  
+                    d3.select("#eventList").selectAll("tspan")
                         .data(todaysEvents)
                         .enter()
-                        .append('h4')
+                        .append('tspan')
                         .attr('class', 'eventLabel')
                         .text(function(d) {
                             if( typeof d.label != 'undefined'){
@@ -363,9 +366,11 @@
                                 return d.title;
                             }
                         })
-                        .style("color", function(d, i) {
+                        .attr("fill", function(d, i) {
                             return cScale(i);
-                        }) 
+                        })
+                        .attr("x", 0)
+                        .attr("dy", "1.7em")
                 }
 
                 function clearEvents() {
