@@ -22,12 +22,6 @@
                 position: fixed;
             }
 
-            .legend-container {
-                position: fixed;
-                top: 165px;
-                right: 250px;
-            }
-
             .axis path,
             .axis line {
                 fill: none;
@@ -40,22 +34,9 @@
                 font-size: 14px;
             }
 
-            #eventList {
-                position: fixed;
-                max-width: 50%;
-            }
-
-            .title {
-                position: fixed;
-                left: 40%;
-            }
-
         </style>
     </head>
     <body>
-        <div class="legend-container"></div>
-        <div id="illus">
-        </div>
         <script type="text/javascript">
             // Your beautiful D3 code will go here
 
@@ -146,30 +127,31 @@
                         .style("height", window.innerHeight + scrollPixels + "px")
                 }
 
-                var eventChart = d3.select("#illus").append("svg")
+                var eventChart = d3.select("body").append("svg")
                                 .attr("viewBox", "0 0 " + fullWidth + " " + fullHeight)
                                 .attr("preserveAspectRatio", "xMidYMid meet")
+                                .attr("id", "chart")
                                 .append("g")
                                 .attr("height", height)
                                 .attr("width", width) 
                                 .attr("transform", "translate("+margin.left+","+margin.top+")")
                                 .style("opacity", 1)
 
-                d3.select("#illus svg").append("text")
+                d3.select("#chart").append("text")
                     .attr("id", "title")
                     .attr("font-size", "1.7em")
                     .attr("transform", "translate(350,30)")
                     .text("TechSoc Events 2015 / 2016")
 
-                d3.select("#illus svg").append("text")
+                d3.select("#chart").append("text")
                     .attr("id", "date")
                     .attr("transform", "translate(800,70)")
 
-                d3.select("#illus svg").append("text")
+                d3.select("#chart").append("text")
                     .attr("id", "breakTag")
                     .attr("transform", "translate(830,100)")
 
-                d3.select("#illus svg").append("text")
+                d3.select("#chart").append("text")
                     .attr("id", "eventList")
                     .attr("transform", "translate(100,50)")
 
@@ -177,7 +159,7 @@
                     .style("top", margin.top + "px")
                     .style("left", margin.left + margin.right + "px")
 
-                var legend = d3.select("#illus svg").append("g")
+                var legend = d3.select("#chart").append("g")
                                 .attr("transform", "translate("+(width-margin.left)+","+135+")")
                                 .attr("class", "legend")
 
